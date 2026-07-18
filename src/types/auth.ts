@@ -20,4 +20,5 @@ export interface AuthState {
   login: (data: LoginRequest) => Promise<void>;
 
   logout: () => void;
+  setAuthError: (er:string | null) => void;
 }

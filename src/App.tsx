@@ -8,20 +8,21 @@ import Posts from "./pages/Posts";
 import Bookmarks from "./pages/Bookmarks";
 import PostDetails from "./pages/PostDetails";
 
+import { useAuthStore } from "./store/authStore"; 
+
 export default function App() {
+  const { user } = useAuthStore();
+
   return (
     <>
-      <Navbar />
+      {user && <Navbar />}
 
       <div className="max-w-6xl mx-auto px-4 py-6">
         <Routes>
-
-          {/* Public Route */}
           <Route path="/login" element={<Login />} />
 
-          {/* Protected Routes */}
           <Route
-            path="/"
+            path="/posts"
             element={
               <ProtectedRoute>
                 <Posts />
@@ -47,7 +48,7 @@ export default function App() {
             }
           />
 
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<Navigate to="/posts" replace />} />
         </Routes>
       </div>
     </>
