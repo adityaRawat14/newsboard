@@ -3,6 +3,12 @@
 A responsive React application that allows users to browse, search, sort, bookmark, and view post details. Built as a take-home assignment using React, TypeScript, Zustand, and Tailwind CSS.
 
 ---
+## Live Demo
+
+🌐 **Application:** https://newsboard-iota.vercel.app
+
+---
+
 
 ## Features
 
