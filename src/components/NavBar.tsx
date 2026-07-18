@@ -7,24 +7,36 @@ export default function Navbar() {
   const { user, logout } = useAuthStore();
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
-    isActive
-      ? "text-blue-600 font-semibold"
-      : "text-gray-700 hover:text-blue-600";
+    `
+      rounded-xl
+      px-4
+      py-2
+      text-sm
+      font-semibold
+      transition-all
+      duration-200
+      ${
+        isActive
+          ? "bg-zinc-900 text-white shadow-md"
+          : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
+      }
+    `;
 
   function handleLogout() {
     logout();
-
     navigate("/login");
   }
 
   return (
-    <header className="bg-white shadow-sm">
-      <nav className="max-w-6xl mx-auto flex justify-between items-center h-16 px-4">
-        <h1 className="text-2xl font-bold text-blue-600">
+    <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/90 backdrop-blur-md">
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        {/* Logo */}
+        <h1 className="cursor-pointer text-2xl font-extrabold tracking-tight text-zinc-900">
           NewsBoard
         </h1>
 
-        <div className="flex items-center gap-6">
+        {/* Navigation */}
+        <div className="flex items-center gap-3">
           <NavLink to="/" className={linkClass}>
             Posts
           </NavLink>
@@ -40,7 +52,21 @@ export default function Navbar() {
           ) : (
             <button
               onClick={handleLogout}
-              className="text-red-500 cursor-pointer hover:text-red-600 font-medium"
+              className="
+                rounded-xl
+                bg-zinc-900
+                px-4
+                py-2
+                text-sm
+                font-semibold
+                text-white
+                transition-all
+                duration-200
+                hover:bg-black
+                hover:shadow-lg
+                active:scale-95
+                cursor-pointer
+              "
             >
               Logout
             </button>

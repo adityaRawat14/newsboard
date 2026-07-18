@@ -1,88 +1,180 @@
-import {type SubmitEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { type SubmitEvent, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useAuthStore } from "../store/authStore";
 
 export default function Login() {
-    const navigate = useNavigate();
-    const { login, loading, setAuthError, error } = useAuthStore();
+  const navigate = useNavigate();
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+  const {
+    login,
+    loading,
+    setAuthError,
+    error,
+    user,
+  } = useAuthStore();
 
-    async function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
-        e.preventDefault();
 
-        // Clear out any old store errors from previous validation attempts
-        setAuthError(null);
+  const [username, setUsername] =
+    useState("");
 
-        // Client-side validations
-        if (username.trim().length < 1) {
-            setAuthError("Username cannot be empty");
-            return;
-        }
-        if (password.length < 1) {
-            setAuthError("Password cannot be empty");
-            return;
-        }
-        if (password.length < 3) {
-            setAuthError("Password must be at least 3 characters long");
-            return;
-        }
+  const [password, setPassword] =
+    useState("");
 
-        try {
-            await login({
-                username,
-                password,
-            });
+  async function handleSubmit(
+    e: SubmitEvent<HTMLFormElement>
+  ) {
+    e.preventDefault();
 
-            navigate("/posts");
-        } catch (err) {
-            // Error handling state is run through the Zustand login method catch block
-        }
+    setAuthError(null);
+
+    if (!username.trim()) {
+      setAuthError("Username cannot be empty");
+      return;
     }
 
-    return (
-        <div className="flex justify-center mt-16">
-            <form
-                onSubmit={handleSubmit}
-                className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md space-y-5"
-            >
-                <h2 className="text-3xl font-bold text-gray-800">Login</h2>
+    if (!password) {
+      setAuthError("Password cannot be empty");
+      return;
+    }
 
-                <Input
-                    label="Username"
-                    name="username"
-                    autoComplete="username"
-                    value={username}
-                    isRequired={true}
-                    required
-                    onChange={(e) => setUsername(e.target.value)}
-                />
+    if (password.length < 3) {
+      setAuthError(
+        "Password must be at least 3 characters."
+      );
+      return;
+    }
 
-                <Input
-                    type="password"
-                    label="Password"
-                    name="password"
-                    autoComplete="current-password"
-                    value={password}
-                    isRequired={true}
-                    required
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+    try {
+      await login({
+        username,
+        password,
+      });
 
-                {error && (
-                    <p className="text-red-500 text-sm font-medium animate-pulse">
-                        {error}
-                    </p>
-                )}
+      navigate("/posts");
+    } catch {}
+  }
+  if (user) {
+    return <Navigate to="/posts" />;
+  }
 
-                <Button disabled={loading}>
-                    {loading ? "Logging in..." : "Login"}
-                </Button>
-            </form>
+  return (
+    <div className="min-h-[calc(100vh-64px)] bg-zinc-50">
+      <div className="mx-auto grid min-h-[calc(100vh-64px)] max-w-7xl grid-cols-1 lg:grid-cols-2">
+
+        {/* Left Side */}
+
+        <div className="hidden flex-col justify-center px-16 lg:flex">
+          <span className="mb-6 inline-flex w-fit rounded-full bg-zinc-900 px-4 py-2 text-sm font-semibold text-white">
+            Welcome Back
+          </span>
+
+          <h1 className="text-6xl font-black tracking-tight text-zinc-900">
+            NewsBoard
+          </h1>
+
+          <p className="mt-6 max-w-lg text-lg leading-8 text-zinc-600">
+            Discover trending posts, save bookmarks,
+            explore discussions, and stay updated with a
+            clean reading experience.
+          </p>
+
+          <div className="mt-10 grid grid-cols-2 gap-5 max-w-lg">
+            <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+              <p className="text-3xl font-bold text-zinc-900">
+                10K+
+              </p>
+              <p className="mt-2 text-zinc-500">
+                Posts
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+              <p className="text-3xl font-bold text-zinc-900">
+                5K+
+              </p>
+              <p className="mt-2 text-zinc-500">
+                Users
+              </p>
+            </div>
+          </div>
         </div>
-    );
+
+        {/* Login Card */}
+
+        <div className="flex items-center justify-center p-6">
+          <form
+            onSubmit={handleSubmit}
+            className="
+              w-full
+              max-w-md
+              rounded-3xl
+              border
+              border-zinc-200
+              bg-white
+              p-10
+              shadow-xl
+            "
+          >
+            <h2 className="text-4xl font-black tracking-tight text-zinc-900">
+              Login
+            </h2>
+
+            <p className="mt-2 text-zinc-500">
+              Sign in to continue.
+            </p>
+
+            <div className="mt-8 space-y-6">
+              <Input
+                label="Username"
+                name="username"
+                autoComplete="username"
+                value={username}
+                isRequired
+                required
+                onChange={(e) =>
+                  setUsername(e.target.value)
+                }
+              />
+
+              <Input
+                type="password"
+                label="Password"
+                name="password"
+                autoComplete="current-password"
+                value={password}
+                isRequired
+                required
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                }
+              />
+            </div>
+
+            {error && (
+              <div className="mt-5 rounded-xl border border-red-200 bg-red-50 p-3">
+                <p className="text-sm font-medium text-red-600">
+                  {error}
+                </p>
+              </div>
+            )}
+
+            <div className="mt-8">
+              <Button disabled={loading}>
+                {loading
+                  ? "Logging in..."
+                  : "Login"}
+              </Button>
+            </div>
+
+            <p className="mt-8 text-center text-sm text-zinc-500">
+              Demo credentials from DummyJSON API
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 }

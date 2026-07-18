@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 import { type AuthState , type User } from "../types/auth";
-
+import { useBookmarkStore } from "./bookmarkStore";
 import { loginUser } from "../services/authService.ts";
 
 const storedUser = localStorage.getItem("user");
@@ -44,7 +44,9 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   logout() {
     localStorage.removeItem("user");
-
+  useBookmarkStore
+        .getState()
+        .clearBookmarks();
     set({
       user: null,
     });
