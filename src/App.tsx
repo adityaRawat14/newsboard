@@ -1,10 +1,10 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
-import Navbar from "./components/NavBar.tsx";
-import ProtectedRoute from "./components/ProtectedRoute.tsx";
+import Navbar from "./components/NavBar";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-import Posts from "./pages/Posts";
 import Login from "./pages/Login";
+import Posts from "./pages/Posts";
 import Bookmarks from "./pages/Bookmarks";
 import PostDetails from "./pages/PostDetails";
 
@@ -15,9 +15,19 @@ export default function App() {
 
       <div className="max-w-6xl mx-auto px-4 py-6">
         <Routes>
-          <Route path="/" element={<Posts />} />
 
+          {/* Public Route */}
           <Route path="/login" element={<Login />} />
+
+          {/* Protected Routes */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Posts />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="/bookmarks"
