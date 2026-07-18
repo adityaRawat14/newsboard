@@ -1,75 +1,137 @@
-# React + TypeScript + Vite
+# React Posts Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive React application that allows users to browse, search, sort, bookmark, and view post details. Built as a take-home assignment using React, TypeScript, Zustand, and Tailwind CSS.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- User Authentication (Login/Logout)
+- Protected Routes
+- Browse Posts
+- Search Posts (Debounced)
+- Sort Posts
+- Pagination
+- View Post Details
+- View Comments
+- Bookmark Posts
+- Bookmark Persistence
+- Responsive UI
+- Error & Loading States
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Additional Feature
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Persistant Pagination  (no matter what page you were at after reload that page will persist on the screen)
+- Responsive Design
 
+ 
+---
+
+## Tech Stack
+
+- React
+- TypeScript
+- Vite
+- React Router
+- Zustand
+- Tailwind CSS
+
+---
+
+## Getting Started
+
+### Clone the repository
+
+```bash
+git clone https://github.com/adityaRawat14/newsboard
+cd newsboard
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+npm install
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Start the development server
+
+```bash
+npm run dev
+```
+
+The application will run on:
 
 ```
+http://localhost:5173
+```
+
+---
+
+## Build
+
+```bash
+npm run build
+```
+
+---
+
+## State Management
+
+I used **Zustand** for global state management because the application only needs a small amount of shared state.
+
+The store manages:
+
+- Authentication state
+- Bookmarked post IDs
+- Current pagination page
+
+Zustand was chosen over larger libraries (like react-redix) because it keeps the code simple, requires very little boilerplate, and fits well for applications of this size.
+
+LocalStorage is used alongside Zustand to persist:
+we could have used browsers local indexDB for persistant and longterm storage but this was small task so we used localstorage as of now
+
+- Logged-in user
+- Bookmarked posts
+- Current page
+
+This allows users to retain their session and bookmarks even after refreshing the page.
+
+---
+
+## Project Structure
+
+```
+src/
+│
+├── components/
+├── hooks/
+├── pages/
+├── services/
+├── store/
+├── types/
+└── App.tsx
+```
+
+---
+
+## API
+
+Data is fetched from the DummyJSON API.
+
+- Posts
+- Single Post
+- Comments
+
+---
+
+## Notes
+
+- Search input is debounced to reduce unnecessary API calls.
+- Pagination is handled through API query parameters.
+- Bookmarks are stored locally and loaded on application startup.
+- The UI is fully responsive and built with Tailwind CSS.
