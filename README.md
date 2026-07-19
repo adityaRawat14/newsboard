@@ -33,7 +33,8 @@ A responsive React application that allows users to browse, search, sort, bookma
 
 
 - Persistant Pagination  (no matter what page you were at after reload that page will persist on the screen)
-- Responsive Design
+- Responsive Components
+- Sorting of blogs by Title (A->Z) or (Z->A)
 
  
 ---
