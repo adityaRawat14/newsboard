@@ -1,6 +1,6 @@
 import { type SubmitEvent, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-
+import { FiCopy, FiCheck } from "react-icons/fi";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useAuthStore } from "../store/authStore";
@@ -55,7 +55,25 @@ export default function Login() {
 
       navigate("/posts");
     } catch {}
+  
   }
+
+  const [copiedField, setCopiedField] = useState<
+  "username" | "password" | null
+>(null);
+
+async function copyText(
+  text: string,
+  field: "username" | "password"
+) {
+  await navigator.clipboard.writeText(text);
+  setCopiedField(field);
+
+  setTimeout(() => {
+    setCopiedField(null);
+  }, 1500);
+}
+
   if (user) {
     return <Navigate to="/posts" />;
   }
@@ -169,9 +187,35 @@ export default function Login() {
               </Button>
             </div>
 
-            <p className="mt-8 text-center text-sm text-zinc-500">
-              Demo credentials from DummyJSON API
-            </p>
+            <div className="mt-8 flex items-center justify-center gap-3 text-xs text-zinc-500">
+  <span>Demo Credentials:</span>
+
+  <button
+    type="button"
+    onClick={() => copyText("emilys", "username")}
+    className="flex items-center gap-1 rounded-md cursor-pointer bg-zinc-100 px-2 py-1 transition hover:bg-zinc-200"
+  >
+    <span>emilys</span>
+    {copiedField === "username" ? (
+      <FiCheck size={12} />
+    ) : (
+      <FiCopy size={12} />
+    )}
+  </button>
+
+  <button
+    type="button"
+    onClick={() => copyText("emilyspass", "password")}
+    className="flex items-center gap-1 cursor-pointer rounded-md bg-zinc-100 px-2 py-1 transition hover:bg-zinc-200"
+  >
+    <span>emilyspass</span>
+    {copiedField === "password" ? (
+      <FiCheck size={12} />
+    ) : (
+      <FiCopy size={12} />
+    )}
+  </button>
+</div>
           </form>
         </div>
       </div>
